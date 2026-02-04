@@ -1,0 +1,385 @@
+openapi: 3.0.3
+info:
+  title: KrishiMind AI API
+  description: |
+    🌾 **Crop Planning & Resource Optimization Engine**
+    
+    AI-powered agricultural advisory system for Indian farmers providing:
+    - District-level crop recommendations
+    - Yield predictions using ML models
+    - Price forecasting from mandi data
+    - Climate scenario simulations
+    
+    ---
+    
+    ⚠️ **Disclaimer**: All predictions are district-level aggregations.
+    Not suitable for farm-specific decisions. Consult local agricultural experts.
+  version: 1.0.0
+  contact:
+    name: KrishiMind AI Team
+    email: support@krishimind.ai
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://api.krishimind.ai/v1
+    description: Production server (AWS)
+
+tags:
+  - name: Predictions
+    description: Crop prediction and optimization endpoints
+  - name: Health
+    description: Service health and status endpoints
+  - name: Models
+    description: Model information endpoints
+
+paths:
+  /:
+    get:
+      summary: Root endpoint
+      description: Returns API information and available endpoints
+      operationId: root
+      tags:
+        - Health
+      responses:
+        '200':
+          description: API information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: KrishiMind AI
+                  version:
+                    type: string
+                    example: 1.0.0
+                  description:
+                    type: string
+                  docs:
+                    type: string
+                    example: /docs
+                  health:
+                    type: string
+                    example: /health
+
+  /health:
+    get:
+      summary: Health check
+      description: Returns service health status and model loading state
+      operationId: healthCheck
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /predict/crop-plan:
+    post:
+      summary: Crop planning prediction
+      description: |
+        Returns optimized crop recommendations for a district/season combination.
+        
+        The optimizer considers:
+        - Predicted yield (from trained ML model)
+        - Predicted price (from mandi data aggregation)
+        - Climate scenario adjustments
+        - Risk assessment
+        
+        **Note**: Results are district-level aggregations, not farm-specific.
+      operationId: predictCropPlan
+      tags:
+        - Predictions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CropPlanRequest'
+            examples:
+              baseline:
+                summary: Baseline prediction
+                value:
+                  district: Guntur
+                  season: Kharif
+                  area: 10.0
+              drought:
+                summary: Drought scenario
+                value:
+                  district: Guntur
+                  season: Kharif
+                  area: 10.0
+                  scenario:
+                    rainfall_delta: -0.3
+                    temp_delta: 0.0
+              warming:
+                summary: Warming scenario
+                value:
+                  district: Nagpur
+                  season: Rabi
+                  area: 5.0
+                  scenario:
+                    rainfall_delta: 0.0
+                    temp_delta: 2.0
+      responses:
+        '200':
+          description: Successful prediction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CropPlanResponse'
+              example:
+                status: success
+                district: Guntur
+                season: Kharif
+                area_hectares: 10.0
+                scenario_applied: baseline
+                recommendations:
+                  - rank: 1
+                    crop: Sugarcane
+                    composite_score: 0.963
+                    predicted_yield_tonnes_per_ha: 73.28
+                    predicted_price_inr_per_tonne: 3626
+                    expected_revenue_inr_per_ha: 265742
+                    total_revenue_inr: 2657420
+                    risk_level: low
+                  - rank: 2
+                    crop: Soybean
+                    composite_score: 0.282
+                    predicted_yield_tonnes_per_ha: 2.70
+                    predicted_price_inr_per_tonne: 3470
+                    expected_revenue_inr_per_ha: 9376
+                    total_revenue_inr: 93760
+                    risk_level: low
+                disclaimer: District-level aggregation. Not farm-specific advice.
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                status: error
+                error_code: VALIDATION_ERROR
+                message: Area must be greater than 0
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /model/info:
+    get:
+      summary: Model information
+      description: Returns information about loaded models
+      operationId: modelInfo
+      tags:
+        - Models
+      responses:
+        '200':
+          description: Model information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [loaded, not_loaded]
+                  yield_model:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      n_features:
+                        type: integer
+                      features:
+                        type: array
+                        items:
+                          type: string
+                  price_model:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      n_features:
+                        type: integer
+                      features:
+                        type: array
+                        items:
+                          type: string
+
+components:
+  schemas:
+    CropPlanRequest:
+      type: object
+      required:
+        - district
+        - season
+        - area
+      properties:
+        district:
+          type: string
+          minLength: 2
+          maxLength: 100
+          description: District name (e.g., 'Guntur', 'Nagpur')
+          example: Guntur
+        season:
+          type: string
+          enum:
+            - Kharif
+            - Rabi
+            - Summer
+            - Autumn
+            - Winter
+            - Whole Year
+          description: Growing season
+          example: Kharif
+        area:
+          type: number
+          format: float
+          minimum: 0.01
+          maximum: 10000
+          description: Area in hectares (must be > 0)
+          example: 10.0
+        scenario:
+          $ref: '#/components/schemas/ScenarioInput'
+
+    ScenarioInput:
+      type: object
+      properties:
+        rainfall_delta:
+          type: number
+          format: float
+          minimum: -1.0
+          maximum: 1.0
+          default: 0.0
+          description: Rainfall change as fraction (-1.0 to 1.0 = -100% to +100%)
+          example: 0.0
+        temp_delta:
+          type: number
+          format: float
+          minimum: -5.0
+          maximum: 10.0
+          default: 0.0
+          description: Temperature change in °C
+          example: 0.0
+
+    CropPlanResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [success, error]
+          example: success
+        district:
+          type: string
+          example: Guntur
+        season:
+          type: string
+          example: Kharif
+        area_hectares:
+          type: number
+          example: 10.0
+        scenario_applied:
+          type: string
+          example: baseline
+        recommendations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CropRecommendation'
+        disclaimer:
+          type: string
+          example: District-level aggregation. Not farm-specific advice.
+
+    CropRecommendation:
+      type: object
+      properties:
+        rank:
+          type: integer
+          minimum: 1
+          description: Recommendation rank (1 = best)
+          example: 1
+        crop:
+          type: string
+          description: Crop name
+          example: Sugarcane
+        composite_score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Multi-criteria score (0-1)
+          example: 0.963
+        predicted_yield_tonnes_per_ha:
+          type: number
+          format: float
+          description: Predicted yield in tonnes per hectare
+          example: 73.28
+        predicted_price_inr_per_tonne:
+          type: number
+          format: float
+          description: Predicted price in INR per tonne
+          example: 3626
+        expected_revenue_inr_per_ha:
+          type: number
+          format: float
+          description: Expected revenue per hectare
+          example: 265742
+        total_revenue_inr:
+          type: number
+          format: float
+          description: Total revenue for given area
+          example: 2657420
+        risk_level:
+          type: string
+          enum: [low, medium, high]
+          description: Risk assessment
+          example: low
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded]
+          example: healthy
+        models_loaded:
+          type: boolean
+          example: true
+        version:
+          type: string
+          example: 1.0.0
+        timestamp:
+          type: string
+          format: date-time
+          example: '2026-02-04T12:00:00Z'
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [error]
+          example: error
+        error_code:
+          type: string
+          description: Error identifier
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          description: Human-readable error message
+          example: Area must be greater than 0
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: true

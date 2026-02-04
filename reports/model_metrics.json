@@ -1,0 +1,58 @@
+{
+  "report_metadata": {
+    "generated_at": "2026-02-04T19:39:00.013813",
+    "report_type": "model_metrics",
+    "version": "1.0"
+  },
+  "yield_model": {
+    "model_type": "RandomForestRegressor",
+    "status": "trained",
+    "feature_names": [],
+    "n_features": 0,
+    "feature_importance": {},
+    "parameters": {
+      "max_depth": 12,
+      "n_estimators": 50,
+      "random_state": 42
+    }
+  },
+  "price_model": {
+    "model_type": "RandomForestRegressor",
+    "status": "trained",
+    "feature_names": [
+      "crop_encoded",
+      "district_encoded",
+      "month"
+    ],
+    "n_features": 3,
+    "feature_importance": {
+      "crop_encoded": 0.906,
+      "month": 0.0687,
+      "district_encoded": 0.0252
+    },
+    "test_metrics": {
+      "R2": 0.9634548666949241,
+      "RMSE": 151.93937201330817,
+      "MAE": 105.58339738761745
+    },
+    "cv_r2_mean": 0.9640521564869534,
+    "cv_r2_std": 0.007759470530555307,
+    "parameters": {
+      "max_depth": 12,
+      "n_estimators": 100,
+      "random_state": 42
+    }
+  },
+  "additional_info": {
+    "artifacts_loaded": [
+      "yield_model",
+      "yield_features",
+      "price_model",
+      "price_features"
+    ]
+  },
+  "summary": {
+    "models_evaluated": 2,
+    "models_successful": 2
+  }
+}
