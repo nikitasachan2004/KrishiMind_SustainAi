@@ -1,64 +1,171 @@
-# 🌾 KrishiMind AI
+# KrishiMind AI - Sustainable Crop & Resource Optimization Engine
 
-**Crop Planning & Resource Optimization Engine**
+**AI system that reduces agricultural water use, fertilizer load, and climate risk through predictive crop planning and scenario-based resource optimization.**
 
-> AI-powered agricultural advisory system for Indian farmers, providing district-level crop recommendations, yield predictions, and revenue optimization under various climate scenarios.
+> District-level crop recommendations, yield predictions, revenue optimization, and **sustainability impact scoring** under various climate scenarios.
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
+- [Sustainable AI Positioning](#sustainable-ai-positioning)
 - [Problem Statement](#problem-statement)
 - [Solution](#solution)
+- [Sustainability Impact Outputs](#sustainability-impact-outputs)
+- [Sustainability Engine Description](#sustainability-engine-description)
+- [Proxy Metric Disclosure](#proxy-metric-disclosure)
+- [District Aggregation Disclosure](#district-aggregation-disclosure)
+- [No Retraining Statement](#no-retraining-statement)
+- [No Synthetic Training Statement](#no-synthetic-training-statement)
 - [Datasets](#datasets)
 - [Feature Engineering](#feature-engineering)
 - [Models](#models)
 - [Model Metrics](#model-metrics)
-- [Risk Disclosures](#risk-disclosures)
-- [System Architecture](#system-architecture)
-- [AWS Deployment](#aws-deployment)
-- [API Usage](#api-usage)
-- [Local Run Guide](#local-run-guide)
-- [Build Philosophy](#build-philosophy)
+- [Architecture Diagram](#architecture-diagram)
+- [How To Run Locally](#how-to-run-locally)
+- [Example API Request / Response](#example-api-request--response)
+- [Risk and Assumption Disclosures](#risk-and-assumption-disclosures)
+- [Repository Structure](#repository-structure)
+- [License](#license)
+- [Authors](#authors)
 
 ---
 
-## 🎯 Problem Statement
+## Sustainable AI Positioning
 
-Indian farmers face critical challenges:
-- **Unpredictable yields** due to climate variability
-- **Price volatility** in agricultural markets
-- **Limited access** to data-driven crop planning tools
-- **No localized recommendations** based on soil and weather conditions
+KrishiMind AI is a **Sustainable AI** system designed for the AMD Slingshot Hackathon - **Sustainable AI & Green Tech** domain.
 
-Traditional farming decisions rely on intuition, leading to:
-- Suboptimal crop selection
-- Revenue losses during adverse weather
-- Inability to plan for climate scenarios
+| Sustainability Criteria | How KrishiMind Addresses It |
+|------------------------|----------------------------|
+| **Water reduction** | Quantifies proxy water savings vs highest-demand crop for every recommendation |
+| **Fertilizer reduction** | Ranks crops by fertilizer-intensity proxy adjusted for soil quality |
+| **Carbon proxy** | Produces per-crop carbon-equivalent footprint estimate |
+| **Climate resilience** | Scenario simulator evaluates drought, heat-stress, and combined shocks |
+| **Resource-efficient AI** | CPU-only tree models; no GPU, no cloud, no accelerator required |
+| **Edge-deployable** | Entire inference pipeline runs in < 256 MB RAM on commodity hardware |
+| **Transparent metrics** | All proxy formulae disclosed; disclaimers auto-included in every response |
+
+Every API response includes sustainability metrics - water saved, fertilizer proxy, carbon proxy, risk reduction, and a composite sustainability score - enabling data-driven crop selection that reduces resource consumption.
 
 ---
 
-## 💡 Solution
+## Problem Statement
+
+Agricultural systems face compounding resource inefficiencies:
+
+- **Water waste** - high irrigation-demand crops planted in water-scarce districts without quantitative comparison of alternatives
+- **Fertilizer overuse** - blanket application rates ignore soil quality variation, increasing cost and environmental load
+- **Climate exposure** - farmers lack scenario-based tools to evaluate crop resilience before committing to a season
+- **Suboptimal crop selection** - decisions based on tradition rather than multi-criteria optimisation across yield, price, climate stability, and resource efficiency
+
+These inefficiencies result in avoidable water consumption, excess chemical inputs, higher carbon-equivalent emissions, and economic losses during adverse weather.
+
+---
+
+## Solution
 
 **KrishiMind AI** provides:
 
-1. **Yield Prediction** — ML models trained on historical crop data, climate features, and soil quality
-2. **Price Forecasting** — District-level mandi price aggregation for revenue estimation
-3. **Crop Optimization** — Multi-criteria scoring (yield × price × climate stability × soil match)
-4. **Scenario Simulation** — What-if analysis for drought, warming, and combined stress conditions
-
-### Key Capabilities
+1. **Yield Prediction** - ML models trained on historical crop data, climate features, and soil quality
+2. **Price Forecasting** - District-level mandi price aggregation for revenue estimation
+3. **Crop Optimization** - Multi-criteria scoring (yield x price x climate stability x soil match)
+4. **Scenario Simulation** - What-if analysis for drought, warming, and combined stress conditions
+5. **Sustainability Impact Scoring** - Proxy water, fertilizer, and carbon metrics for every recommendation
 
 | Feature | Description |
 |---------|-------------|
 | Yield Model | RandomForest with 8 climate-soil features |
 | Price Model | RandomForest on mandi aggregated data |
 | Optimizer | Weighted composite scoring algorithm |
-| Simulator | Predefined climate scenarios (±rainfall, ±temperature) |
+| Simulator | Predefined climate scenarios (rainfall, temperature) |
+| Sustainability Engine | Proxy water/fertilizer/carbon scoring per crop |
 
 ---
 
-## 📊 Datasets
+## Sustainability Impact Outputs
+
+Every API response includes per-crop sustainability metrics:
+
+| Metric | Description |
+|--------|-------------|
+| `water_use_estimate` | Proxy water consumption (index-hectare-days) |
+| `water_saved_vs_baseline` | % water saved vs highest-demand crop (Rice) |
+| `fertilizer_proxy` | Fertilizer load index (0-1, lower = better) |
+| `carbon_proxy` | Carbon footprint proxy (index-hectare units) |
+| `risk_reduction_pct` | Climate risk reduction vs baseline yield |
+| `sustainability_score` | Weighted composite sustainability score (0-1) |
+
+The sustainability report (`reports/sustainability_report.json`) also auto-exports aggregate metrics:
+
+| Output | Description |
+|--------|-------------|
+| `avg_water_saved_vs_baseline_pct` | Average water saved across recommended crops |
+| `avg_carbon_proxy_avoided` | Average carbon proxy footprint |
+| `low_input_crop_pct` | Percentage of low-input crops in recommendations |
+| `avg_climate_risk_reduction_pct` | Average climate risk reduction |
+
+---
+
+## Sustainability Engine Description
+
+The **SustainabilityImpactEngine** (`src/sustainability/`) enriches every crop recommendation with resource-efficiency metrics. It uses **no ML** - all computations are deterministic, based on FAO-style agronomic constants.
+
+```
+src/sustainability/
+    __init__.py
+    crop_constants.py   # FAO-style proxy indices for 10 major crops
+    impact_engine.py    # SustainabilityImpactEngine class
+```
+
+| Formula | Expression |
+|---------|------------|
+| Water use | `crop_water_factor x area x season_length_days x 5` |
+| Fertilizer proxy | `fertilizer_intensity x (1 - soil_quality_index)` |
+| Carbon proxy | `fertilizer_score x area x 12` |
+| Sustainability score | Weighted normalised combination of: water efficiency, fertilizer efficiency, climate stability, soil match |
+
+**Constants** cover 10 major crops: Rice, Wheat, Maize, Sugarcane, Cotton, Groundnut, Soybean, Arhar/Tur, Gram, Bajra.
+
+Total compute overhead per crop: **< 0.01 ms** (pure arithmetic, no ML invocation).
+
+---
+
+## Proxy Metric Disclosure
+
+> **Sustainability metrics are proxy estimates derived from agronomic literature constants and soil indices. They are decision-support indicators, not field-measured values.**
+
+- All constants are relative agronomic proxy indices derived from FAO-style reference literature
+- These are unit-less comparative indices - not absolute physical measurements
+- The `proxy_metrics: true` flag is auto-included in every API response
+- The `sustainability_disclosure` text is auto-included in every response
+
+---
+
+## District Aggregation Disclosure
+
+> **All predictions and sustainability scores operate at district-level granularity. No field-level, GPS-based, or grid-level geo precision is claimed.**
+
+Outputs are suitable for regional planning and comparative crop ranking, not for individual farm prescriptions.
+
+---
+
+## No Retraining Statement
+
+> **No model retraining, fine-tuning, or online learning occurs during deployment.**
+
+Models are inference-only artifacts (`models/yield_model.pkl`, `models/price_model.pkl`). They are loaded once at startup. The sustainability scoring layer is entirely deterministic and uses no ML.
+
+---
+
+## No Synthetic Training Statement
+
+> **All ML models were trained on real, publicly available datasets.**
+
+Sources: ICRISAT crop statistics, IMD climate records, Soil Health Card data. No synthetic data was generated for model training. Where mandi price coverage is sparse, median-by-crop fallback from real data is applied.
+
+---
+
+## Datasets
 
 All models trained on **real, publicly available Indian agricultural datasets**:
 
@@ -69,17 +176,9 @@ All models trained on **real, publicly available Indian agricultural datasets**:
 | Temperature Features | IMD | 10,650 | Growing degree days, heatwave counts |
 | Soil Data | Soil Health Cards | 673 | Micronutrient levels, quality index |
 
-### Data Sources
-
-- **ICRISAT** — District-level crop production statistics
-- **IMD (India Meteorological Department)** — Rainfall, temperature records
-- **Soil Health Card Portal** — Soil quality indicators
-
-> ⚠️ No synthetic data generation used for model training.
-
 ---
 
-## 🔧 Feature Engineering
+## Feature Engineering
 
 ### Yield Model Features (8 features)
 
@@ -104,200 +203,113 @@ All models trained on **real, publicly available Indian agricultural datasets**:
 
 ---
 
-## 🤖 Models
+## Models
 
 ### Pre-Trained Models (Inference Only)
 
 | Model | Algorithm | Purpose | Location |
 |-------|-----------|---------|----------|
 | Yield Model | RandomForestRegressor | Predict tonnes/hectare | `models/yield_model.pkl` |
-| Price Model | RandomForestRegressor | Predict ₹/tonne | `models/price_model.pkl` |
+| Price Model | RandomForestRegressor | Predict Rs/tonne | `models/price_model.pkl` |
 
-### Model Selection Process
+Four algorithms evaluated via 5-fold cross-validation: RandomForest, GradientBoosting, XGBoost, LightGBM. **RandomForest selected** for both yield and price based on best validation R-squared.
 
-Four algorithms evaluated via 5-fold cross-validation:
-1. RandomForest
-2. GradientBoosting
-3. XGBoost
-4. LightGBM
-
-**RandomForest selected** for both yield and price based on best validation R².
-
-> 🚫 **No retraining occurs at inference time.** Models are loaded once at startup.
+> **No retraining occurs at inference time.** Models are loaded once at startup.
 
 ---
 
-## 📈 Model Metrics
+## Model Metrics
 
-### Yield Model Performance
+### Yield Model
 
 | Metric | Train | Test |
 |--------|-------|------|
-| R² | 0.8899 | 0.8511 |
+| R-squared | 0.8899 | 0.8511 |
 | RMSE | 307.21 | 358.97 |
-| CV R² | 0.8743 ± 0.0126 | — |
+| CV R-squared | 0.8743 +/- 0.0126 | - |
 
-### Price Model Performance
+### Price Model
 
 | Metric | Train | Test |
 |--------|-------|------|
-| R² | 0.9879 | 0.9635 |
+| R-squared | 0.9879 | 0.9635 |
 | RMSE | 90.38 | 151.94 |
-| MAE | — | 105.58 |
-| CV R² | 0.9641 ± 0.0078 | — |
-
-### Feature Importance (Price Model)
-
-| Feature | Importance |
-|---------|------------|
-| crop_encoded | 90.60% |
-| month | 6.87% |
-| district_encoded | 2.52% |
+| MAE | - | 105.58 |
+| CV R-squared | 0.9641 +/- 0.0078 | - |
 
 ---
 
-## ⚠️ Risk Disclosures
-
-### 1. Geographic Resolution Limitation
-
-> **This system provides DISTRICT-LEVEL predictions only.**
->
-> No farm-level, GPS-based, or grid-level geo precision is claimed. All outputs represent district-level aggregations suitable for regional planning, not individual farm decisions.
-
-### 2. Price Model Transparency
-
-> **Price estimates are derived from real mandi datasets with district aggregation.**
->
-> No synthetic price training data was generated. Where mandi coverage is sparse, median-by-crop fallback is applied with appropriate logging.
-
-### 3. Scenario Simulation Disclaimer
-
-> **Climate scenarios are hypothetical projections, not forecasts.**
->
-> Scenario simulations (drought, warming) show model sensitivity to input changes. They do not represent meteorological predictions and should not be used for disaster planning.
-
-### 4. Model Generalization
-
-> **Models trained on historical data (1997-2020).**
->
-> Performance on future unseen climate extremes or new crop varieties is not guaranteed. Regular retraining with updated data is recommended.
-
----
-
-## 🏗️ System Architecture
+## Architecture Diagram
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        KrishiMind AI                            │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐  │
-│  │  Client  │───▶│   API    │───▶│  Models  │───▶│ Response │  │
-│  │ Request  │    │ Gateway  │    │ Inference│    │   JSON   │  │
-│  └──────────┘    └──────────┘    └──────────┘    └──────────┘  │
-│                        │                                        │
-│                        ▼                                        │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                   Inference Pipeline                     │   │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────────┐ │   │
-│  │  │ Feature │─▶│  Yield  │─▶│  Price  │─▶│  Optimizer  │ │   │
-│  │  │ Builder │  │  Model  │  │  Model  │  │  + Revenue  │ │   │
-│  │  └─────────┘  └─────────┘  └─────────┘  └─────────────┘ │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐   │
-│  │                     Data Layer                           │   │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────────┐ │   │
-│  │  │ Models  │  │Artifacts│  │ Reports │  │   Config    │ │   │
-│  │  │  .pkl   │  │  .json  │  │  .json  │  │   .yaml     │ │   │
-│  │  └─────────┘  └─────────┘  └─────────┘  └─────────────┘ │   │
-│  └─────────────────────────────────────────────────────────┘   │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+User Request (district, season, area, scenario)
+       |
+       v
+FastAPI Inference API          <-- stateless HTTP endpoint
+       |
+       v
+Model Loader (pickle)          <-- loads .pkl once at startup
+       |
+       +----------+
+       v          v
+ Yield Model   Price Model     <-- RandomForest, CPU-only
+       |          |
+       +----+-----+
+            v
+    Crop Optimizer             <-- multi-criteria weighted scoring
+            |
+            v
+ Sustainability Impact Engine  <-- deterministic proxy arithmetic (no ML)
+            |
+            v
+ Decision Output + Sustainability Metrics (JSON)
+```
+
+**Key Properties**:
+
+| Property | Detail |
+|----------|--------|
+| CPU-efficient tree models | O(log N) per tree - threshold comparisons only |
+| Low-compute inference | Single prediction < 5 ms on commodity CPU |
+| No GPU dependency | Entire pipeline runs on x86_64 or ARM64 |
+| Edge-deployable | Model artifacts < 10 MB; runtime < 256 MB RAM |
+| Stateless inference | No session state, no database, no external calls |
+| Sustainability layer | Deterministic arithmetic; < 0.01 ms per crop |
+
+See [docs/architecture_slide.md](docs/architecture_slide.md) for detailed slide-ready diagram.
+See [docs/efficient_inference.md](docs/efficient_inference.md) for CPU-efficiency justification.
+
+---
+
+## How To Run Locally
+
+Three commands - no cloud account, GPU, or external database required:
+
+```bash
+pip install -r requirements.txt                          # 1. Install
+uvicorn cloud.api.app:app --host 0.0.0.0 --port 8000     # 2. Run
+python scripts/final_test_matrix.py                       # 3. Test
+```
+
+Optional - generate demo output artifacts:
+
+```bash
+python scripts/generate_demo_outputs.py
 ```
 
 ---
 
-## ☁️ AWS Deployment
+## Example API Request / Response
 
-### Architecture Overview
+### Request
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         AWS Cloud                               │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│   ┌───────────┐     ┌───────────┐     ┌───────────────────┐    │
-│   │    S3     │     │  Lambda   │     │    API Gateway    │    │
-│   │  Bucket   │────▶│ Function  │◀────│    (REST API)     │    │
-│   │ (models)  │     │ (Mangum)  │     │                   │    │
-│   └───────────┘     └───────────┘     └───────────────────┘    │
-│         │                 │                     │               │
-│         ▼                 ▼                     ▼               │
-│   ┌───────────┐     ┌───────────┐     ┌───────────────────┐    │
-│   │ SageMaker │     │CloudWatch │     │       IAM         │    │
-│   │ Endpoint  │     │   Logs    │     │ (Least Privilege) │    │
-│   │  (batch)  │     │           │     │                   │    │
-│   └───────────┘     └───────────┘     └───────────────────┘    │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+```bash
+curl -X POST http://localhost:8000/predict/crop-plan \
+  -H "Content-Type: application/json" \
+  -d '{"district": "Guntur", "season": "Kharif", "area": 10.0, "scenario": {"rainfall_delta": 0.0, "temp_delta": 0.0}}'
 ```
 
-### Component Responsibilities
-
-| Service | Purpose |
-|---------|---------|
-| **S3** | Model artifacts, feature configs, dataset storage |
-| **Lambda** | Real-time inference (FastAPI + Mangum) |
-| **API Gateway** | HTTPS endpoint, request routing |
-| **SageMaker** | Batch inference for bulk predictions |
-| **CloudWatch** | Logging, monitoring, alerts |
-| **IAM** | Role-based access, least privilege |
-
-### Deployment Files
-
-```
-cloud/
-├── api/
-│   ├── app.py           # FastAPI application
-│   ├── predict.py       # Inference logic
-│   ├── schemas.py       # Pydantic models
-│   └── model_loader.py  # Startup model loading
-├── lambda/
-│   └── handler.py       # Mangum adapter
-├── sagemaker/
-│   ├── inference.py     # SageMaker inference script
-│   └── requirements.txt
-└── config/
-    ├── aws_architecture.md
-    └── api_contract.yaml
-```
-
----
-
-## 🔌 API Usage
-
-### Endpoint
-
-```
-POST /predict/crop-plan
-```
-
-### Request Schema
-
-```json
-{
-  "district": "Guntur",
-  "season": "Kharif",
-  "area": 10.0,
-  "scenario": {
-    "rainfall_delta": 0.0,
-    "temp_delta": 0.0
-  }
-}
-```
-
-### Response Schema
+### Response
 
 ```json
 {
@@ -315,10 +327,20 @@ POST /predict/crop-plan
       "predicted_price_inr_per_tonne": 3626,
       "expected_revenue_inr_per_ha": 265742,
       "total_revenue_inr": 2657420,
-      "risk_level": "low"
+      "risk_level": "low",
+      "sustainability_metrics": {
+        "water_use_estimate": 15675.0,
+        "water_saved_vs_baseline": 5.0,
+        "fertilizer_proxy": 0.1445,
+        "carbon_proxy": 17.34,
+        "risk_reduction_pct": 0.0,
+        "sustainability_score": 0.6814
+      },
+      "proxy_metrics": true
     }
   ],
-  "disclaimer": "District-level aggregation. Not farm-specific advice."
+  "disclaimer": "District-level aggregation. Not farm-specific advice.",
+  "sustainability_disclosure": "Sustainability metrics are proxy estimates..."
 }
 ```
 
@@ -327,143 +349,88 @@ POST /predict/crop-plan
 | Field | Constraint |
 |-------|------------|
 | `district` | Required, must be valid district name |
-| `season` | Required, one of: Kharif, Rabi, Summer, Autumn, Winter, Whole Year |
+| `season` | Required: Kharif, Rabi, Summer, Autumn, Winter, Whole Year |
 | `area` | Required, must be > 0 |
-| `rainfall_delta` | Optional, range: -1.0 to 1.0 (-100% to +100%) |
-| `temp_delta` | Optional, range: -5.0 to 10.0 (°C) |
+| `rainfall_delta` | Optional, range: -1.0 to 1.0 |
+| `temp_delta` | Optional, range: -5.0 to 10.0 deg C |
 
 ---
 
-## 🚀 Local Run Guide
+## Risk and Assumption Disclosures
 
-### Prerequisites
-
-- Python 3.9+
-- pip
-
-### Installation
-
-```bash
-# Clone repository
-git clone https://github.com/your-org/krishimind-ai.git
-cd krishimind-ai
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# or: venv\Scripts\activate  # Windows
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
-### Verify Models Exist
-
-```bash
-ls -la models/
-# Should show: yield_model.pkl, price_model.pkl
-
-ls -la artifacts/
-# Should show: yield_features.json, price_features.json
-```
-
-### Run API Server
-
-```bash
-cd cloud/api
-uvicorn app:app --host 0.0.0.0 --port 8000 --reload
-```
-
-### Test API
-
-```bash
-python test_api.py
-```
-
-### Run Full Pipeline (Inference Demo)
-
-```bash
-python run_pipeline.py
-```
+1. **Sustainability Proxy Metrics** - Decision-support indicators, not field-measured values.
+2. **Geographic Resolution** - District-level aggregation; no field-level geo precision claimed.
+3. **Price Model Transparency** - Real mandi datasets with district aggregation; median-by-crop fallback where sparse.
+4. **Scenario Disclaimer** - Climate scenarios are hypothetical projections showing model sensitivity, not meteorological predictions.
+5. **Model Generalization** - Trained on historical data (1997-2020); performance on future unseen extremes is not guaranteed.
 
 ---
 
-## 🧱 Build Philosophy
+## Cloud Deployment (Optional)
 
-This repository follows **commit-by-commit development** to ensure:
-
-1. **Auditability** — Every change is traceable
-2. **Reproducibility** — Any commit can be checked out and run
-3. **Transparency** — No magic, no hidden steps
-
-### Commit History Progression
-
-| Phase | Commits |
-|-------|---------|
-| **Data Layer** | Dataset integration, cleaning, feature engineering |
-| **Model Layer** | Training, comparison, selection, serialization |
-| **Service Layer** | Revenue engine, optimizer, simulator |
-| **API Layer** | FastAPI, validation, error handling |
-| **Cloud Layer** | Lambda adapter, SageMaker inference, Docker |
-| **Quality Layer** | Tests, documentation, cleanup |
+Cloud deployment is **optional and generic**. The system runs fully locally. If cloud deployment is desired, any provider supporting Docker containers or serverless Python can be used. The `cloud/` directory contains adapter code for generic serverless deployment (e.g., Mangum wrapper). No specific cloud provider is required.
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 krishimind-ai/
-├── src/                    # Core ML modules
-│   ├── data_loader.py
-│   ├── feature_builder.py
-│   ├── revenue_engine.py
-│   ├── crop_optimizer.py
-│   └── scenario_simulator.py
-├── models/                 # Trained model artifacts
-│   ├── yield_model.pkl
-│   └── price_model.pkl
-├── artifacts/              # Feature configs
-│   ├── yield_features.json
-│   └── price_features.json
-├── reports/                # Evaluation metrics
-│   └── model_metrics.json
-├── cloud/                  # AWS deployment
-│   ├── api/
-│   ├── lambda/
-│   ├── sagemaker/
-│   └── config/
-├── docker/                 # Container config
-│   └── Dockerfile
-├── data_dictionary/        # Schema documentation
-├── tests/                  # Unit tests
-├── README.md
-├── LICENSE
-├── requirements.txt
-└── .gitignore
+    src/                    # Core ML + sustainability modules
+        data_loader.py
+        feature_builder.py
+        revenue_engine.py
+        crop_optimizer.py
+        scenario_simulator.py
+        sustainability_report_generator.py
+        sustainability/
+            crop_constants.py
+            impact_engine.py
+    models/                 # Trained model artifacts (inference only)
+        yield_model.pkl
+        price_model.pkl
+    artifacts/              # Feature configs
+        yield_features.json
+        price_features.json
+    reports/                # Evaluation + sustainability metrics
+        model_metrics.json
+    cloud/                  # API + optional cloud adapters
+        api/                # FastAPI application
+        config/             # API contract
+    docker/                 # Container config
+        Dockerfile
+    docs/                   # Architecture + domain docs
+        domain_alignment.md
+        architecture_slide.md
+        efficient_inference.md
+    scripts/                # Demo + test utilities
+        generate_demo_outputs.py
+        final_test_matrix.py
+    demo_outputs/           # Generated scenario outputs (JSON)
+    tests/                  # Unit tests
+    README.md
+    LICENSE
+    requirements.txt
+    .gitignore
 ```
 
 ---
 
-## 📜 License
+## License
 
-MIT License — See [LICENSE](LICENSE) for details.
-
----
-
-## 👥 Authors
-
-- **KrishiMind AI Team** — Hackathon 2026
+MIT License - See [LICENSE](LICENSE) for details.
 
 ---
 
-## 🙏 Acknowledgments
+## Authors
+
+- **Nikita Sachan** - Primary Developer
+- **Nishant Gupta** - Contributor
+
+---
+
+## Acknowledgments
 
 - ICRISAT for crop production data
 - India Meteorological Department for climate data
 - Soil Health Card Portal for soil quality data
-
----
-
-<p align="center">
-  <strong>🌾 Empowering Indian Farmers with AI 🌾</strong>
-</p>
