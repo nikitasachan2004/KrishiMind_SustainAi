@@ -222,6 +222,81 @@ def test_scenario_simulation() -> bool:
     return False
 
 
+def test_sustainability_fields() -> bool:
+    """Validate that sustainability metrics are present in API responses."""
+    print("\n" + "=" * 60)
+    print("TEST: Sustainability Metrics")
+    print("=" * 60)
+
+    payload = {"district": "Guntur", "season": "Kharif", "area": 10.0}
+
+    try:
+        response = requests.post(
+            f"{BASE_URL}/predict/crop-plan",
+            json=payload,
+            headers={"Content-Type": "application/json"},
+            timeout=30,
+        )
+
+        if response.status_code != 200:
+            print(f"✗ Non-200 response: {response.status_code}")
+            return False
+
+        data = response.json()
+
+        # Check top-level disclosure field
+        if "sustainability_disclosure" not in data:
+            print("✗ Missing top-level 'sustainability_disclosure'")
+            return False
+        print("✓ sustainability_disclosure present")
+
+        # Validate each recommendation
+        required_sus_keys = [
+            "water_use_estimate",
+            "water_saved_vs_baseline",
+            "fertilizer_proxy",
+            "carbon_proxy",
+            "risk_reduction_pct",
+            "sustainability_score",
+        ]
+
+        all_ok = True
+        for rec in data.get("recommendations", []):
+            crop = rec.get("crop", "?")
+
+            # proxy_metrics flag
+            if "proxy_metrics" not in rec:
+                print(f"✗ {crop}: missing 'proxy_metrics' flag")
+                all_ok = False
+                continue
+
+            sus = rec.get("sustainability_metrics")
+            if sus is None:
+                print(f"✗ {crop}: missing 'sustainability_metrics' block")
+                all_ok = False
+                continue
+
+            missing = [k for k in required_sus_keys if k not in sus]
+            if missing:
+                print(f"✗ {crop}: missing sustainability keys: {missing}")
+                all_ok = False
+            else:
+                print(
+                    f"✓ {crop}: sustainability_score={sus['sustainability_score']:.4f}, "
+                    f"water_saved={sus['water_saved_vs_baseline']:.1f}%, "
+                    f"carbon_proxy={sus['carbon_proxy']:.2f}"
+                )
+
+        return all_ok
+
+    except requests.exceptions.ConnectionError:
+        print("✗ Connection failed. Is the server running?")
+        return False
+    except Exception as e:
+        print(f"✗ Error: {e}")
+        return False
+
+
 def main():
     """Run all tests"""
     print("\n" + "=" * 60)
@@ -231,7 +306,7 @@ def main():
     
     # Test sequence
     tests_passed = 0
-    tests_total = 4
+    tests_total = 5
     
     # 1. Health check
     if test_health():
@@ -250,6 +325,10 @@ def main():
     
     # 4. Scenarios
     if test_scenario_simulation():
+        tests_passed += 1
+    
+    # 5. Sustainability fields
+    if test_sustainability_fields():
         tests_passed += 1
     
     # Summary
