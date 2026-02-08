@@ -14,7 +14,8 @@ from typing import Dict, Any, List, Optional
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from cloud.api.model_loader import get_model_loader, ensure_models_loaded
-from cloud.api.schemas import CropPlanRequest, CropRecommendation, ScenarioInput
+from cloud.api.schemas import CropPlanRequest, CropRecommendation, SustainabilityMetrics, ScenarioInput
+from src.sustainability.impact_engine import SustainabilityImpactEngine
 
 logger = logging.getLogger('predict')
 
@@ -63,6 +64,9 @@ class CropPredictor:
         self.price_model = self.loader.get_price_model()
         self.yield_features = self.loader.get_yield_features()
         self.price_features = self.loader.get_price_features()
+        
+        # Sustainability impact engine (deterministic — no ML)
+        self.sustainability_engine = SustainabilityImpactEngine()
         
         # Build encoding maps from features
         self._build_encodings()
@@ -344,11 +348,24 @@ class CropPredictor:
         # Sort by composite score (descending)
         recommendations.sort(key=lambda x: x['composite_score'], reverse=True)
         
+        # ── Sustainability enrichment (deterministic, no ML) ──
+        soil_quality = self.DEFAULT_CLIMATE['soil_quality_index']
+        self.sustainability_engine.enrich_crop_results(
+            crop_rankings=recommendations,
+            soil_quality_index=soil_quality,
+            area=area,
+            season=season,
+        )
+        
         # Add ranks and convert to schema
         result = []
         for i, rec in enumerate(recommendations[:top_n], 1):
+            sus = rec.pop('sustainability_metrics', None)
+            proxy = rec.pop('proxy_metrics', True)
             result.append(CropRecommendation(
                 rank=i,
+                sustainability_metrics=SustainabilityMetrics(**sus) if sus else None,
+                proxy_metrics=proxy,
                 **rec
             ))
         

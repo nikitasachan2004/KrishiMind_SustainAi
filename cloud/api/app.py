@@ -66,20 +66,25 @@ async def lifespan(app: FastAPI):
 
 # Create FastAPI application
 app = FastAPI(
-    title="KrishiMind AI",
+    title="KrishiMind AI — Sustainable Crop & Resource Optimization Engine",
     description="""
-    🌾 **Crop Planning & Resource Optimization Engine**
+    🌾 **Sustainable Crop Planning & Resource Optimization Engine**
     
     AI-powered agricultural advisory system providing:
     - District-level crop recommendations
     - Yield predictions using ML models
     - Price forecasting from mandi data
     - Climate scenario simulations
+    - **Sustainability impact scoring** (water, fertilizer, carbon proxies)
     
     ---
     
     ⚠️ **Disclaimer**: District-level aggregation only. 
     Not farm-specific advice. Consult local experts before farming decisions.
+    
+    Sustainability metrics are proxy estimates derived from agronomic
+    literature constants and soil indices. They are decision-support
+    indicators, not field-measured values.
     """,
     version=API_VERSION,
     lifespan=lifespan,
