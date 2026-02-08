@@ -31,7 +31,7 @@ KrishiMind AI is an AI-powered crop planning and resource optimization engine th
 
 ### Secondary Objectives
 - Expose predictions via REST API for integration with external systems
-- Support AWS-deployable architecture for scalability
+- Support cloud-deployable architecture for scalability (optional; runs fully local)
 - Maintain inference latency under 2 seconds per request
 - Provide explainable outputs with component scores
 
@@ -90,8 +90,8 @@ KrishiMind AI is an AI-powered crop planning and resource optimization engine th
 
 ### NFR-2: Scalability
 - **NFR-2.1**: Stateless inference design for horizontal scaling
-- **NFR-2.2**: AWS Lambda compatible for serverless deployment
-- **NFR-2.3**: Model artifacts stored in S3 for distributed access
+- **NFR-2.2**: Compatible with serverless deployment (optional cloud deployment)
+- **NFR-2.3**: Model artifacts stored locally or in object storage for distributed access
 
 ### NFR-3: Reliability
 - **NFR-3.1**: API availability target: 95% uptime (hackathon scope)
@@ -105,7 +105,7 @@ KrishiMind AI is an AI-powered crop planning and resource optimization engine th
 
 ### NFR-5: Deployability
 - **NFR-5.1**: Local-first runnable (development and testing)
-- **NFR-5.2**: AWS deployable architecture (S3, Lambda, API Gateway, CloudWatch)
+- **NFR-5.2**: Cloud-deployable architecture (optional; generic model serving)
 - **NFR-5.3**: Containerization support (Docker) for consistent environments
 
 ## 6. Data Requirements
@@ -253,7 +253,7 @@ KrishiMind AI is an AI-powered crop planning and resource optimization engine th
 1. **Functionality**: All API endpoints operational and return valid predictions
 2. **Technical Soundness**: ML pipeline follows best practices; architecture is scalable
 3. **Documentation**: Clear requirements, design, and deployment instructions
-4. **Deployability**: Successfully deployable on AWS or runnable locally
+4. **Deployability**: Runs fully locally; optionally deployable to any cloud provider
 5. **Innovation**: Multi-factor decision engine beyond simple yield prediction
 
 ### Performance Metrics
@@ -272,7 +272,7 @@ KrishiMind AI is an AI-powered crop planning and resource optimization engine th
 - Pre-trained ML models for yield, price, and risk
 - Inference API with recommendation and simulation endpoints
 - District-level predictions for major crops (Rice, Wheat, Cotton, Sugarcane, Maize, Pulses, Soybean)
-- AWS deployment architecture design
+- Optional cloud deployment architecture design
 - Local development and testing environment
 - Documentation (requirements, design, API reference)
 

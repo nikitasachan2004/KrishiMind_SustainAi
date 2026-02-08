@@ -45,15 +45,14 @@ docker stop krishimind
 docker rm krishimind
 ```
 
-## Push to ECR (AWS)
+## Push to Container Registry (Optional)
 
 ```bash
-# Login to ECR
-aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com
-
-# Tag image
-docker tag krishimind-ai:latest ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/krishimind-ai:latest
+# Tag image for your registry
+docker tag krishimind-ai:latest YOUR_REGISTRY/krishimind-ai:latest
 
 # Push
-docker push ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/krishimind-ai:latest
+docker push YOUR_REGISTRY/krishimind-ai:latest
 ```
+
+> Any container registry (Docker Hub, GitHub Container Registry, or cloud-specific) can be used. No specific cloud provider is required.

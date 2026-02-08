@@ -615,38 +615,33 @@ def get_recommendations(request: RecommendationRequest):
 - **Examples**: Request/response examples included in Pydantic models
 
 
-## 8. AWS Deployment Architecture
+## 8. Deployment Architecture (Optional Cloud)
 
 ### 8.1 Deployment Overview
 
-**Architecture Type**: AWS deployable, local-first runnable
+**Architecture Type**: Local-first runnable; optionally deployable to any cloud provider
 
-**AWS Services**:
-- **S3**: Model artifacts and data storage
-- **Lambda**: Serverless inference function
-- **API Gateway**: HTTP API endpoint
-- **CloudWatch**: Logging and monitoring
-- **SageMaker**: (Optional) Model training and hosting
+**Generic Services (if cloud-deployed)**:
+- **Object Storage**: Model artifacts and data storage
+- **Serverless Function**: Inference function (optional)
+- **API Gateway / Reverse Proxy**: HTTP API endpoint (optional)
+- **Logging**: Monitoring and observability (optional)
+
+> Cloud deployment is entirely optional. The system runs fully locally with `uvicorn`.
 
 ### 8.2 Deployment Diagram
 
 ```
 ┌──────────────┐
 │   Client     │
-│ (Dashboard/  │
-│   Mobile)    │
+│ (Browser /   │
+│   Script)    │
 └──────┬───────┘
-       │ HTTPS
+       │ HTTP
        ▼
 ┌──────────────────────┐
-│   API Gateway        │
-│  (HTTP API)          │
-└──────┬───────────────┘
-       │
-       ▼
-┌──────────────────────┐
-│   Lambda Function    │
-│  (FastAPI + Mangum)  │
+│  FastAPI Server      │
+│  (uvicorn / Docker)  │
 │                      │
 │  - Load models       │
 │  - Run inference     │
@@ -655,84 +650,52 @@ def get_recommendations(request: RecommendationRequest):
        │
        ▼
 ┌──────────────────────┐
-│   S3 Bucket          │
+│  Local Model Store   │
 │                      │
 │  - Model artifacts   │
-│  - Training data     │
-│  - Feature data      │
-└──────────────────────┘
-       │
-       ▼
-┌──────────────────────┐
-│   CloudWatch Logs    │
-│  - API requests      │
-│  - Errors            │
-│  - Latency metrics   │
+│  - Feature configs   │
 └──────────────────────┘
 ```
 
-### 8.3 Lambda Function Design
+### 8.3 Serverless Adapter (Optional)
 
-**Handler**: `deployment/lambda_handler.py`
+**Handler**: `cloud/lambda/handler.py`
 
 ```python
 from mangum import Mangum
-from src.api.main import app
+from cloud.api.app import app
 
-# Wrap FastAPI app for Lambda
+# Wrap FastAPI app for generic serverless deployment
 handler = Mangum(app)
 ```
 
-**Configuration**:
-- Runtime: Python 3.9
+**Configuration (if cloud-deployed)**:
+- Runtime: Python 3.9+
 - Memory: 1024 MB (adjust based on model size)
 - Timeout: 30 seconds
 - Environment Variables:
-  - `S3_BUCKET`: Model storage bucket
-  - `AWS_REGION`: Deployment region (ap-south-1)
-  - `MODEL_PATH`: S3 path to model artifacts
+  - `MODEL_PATH`: Path to model artifacts
 
-**Cold Start Optimization**:
-- Keep models in `/tmp` directory (512 MB available)
-- Use Lambda layers for dependencies (scikit-learn, xgboost, etc.)
-- Provisioned concurrency for production (optional)
-
-### 8.4 S3 Bucket Structure
+### 8.4 Model Storage Structure
 
 ```
-s3://krishimind-data/
-├── models/
-│   ├── yield_model.joblib
-│   ├── price_model.joblib
-│   ├── risk_model.joblib
-│   └── metadata.json
-├── data/
-│   ├── weather/
-│   ├── soil/
-│   ├── yield_history/
-│   └── mandi_prices/
-└── logs/
-    └── inference_logs/
+models/
+├── yield_model.pkl
+├── price_model.pkl
+└── metadata.json
+artifacts/
+├── yield_features.json
+└── price_features.json
 ```
 
-### 8.5 CloudFormation Template
+### 8.5 Container Deployment (Optional)
 
-**Infrastructure as Code**: `deployment/cloudformation.yaml`
-
-**Resources Defined**:
-- S3 bucket with versioning
-- Lambda function with execution role
-- API Gateway HTTP API
-- CloudWatch log group
-- IAM roles and policies
+**Docker-based deployment** is supported for any container orchestration platform.
 
 **Deployment Command**:
 ```bash
-aws cloudformation deploy \
-  --template-file deployment/cloudformation.yaml \
-  --stack-name krishimind-ai \
-  --capabilities CAPABILITY_IAM \
-  --parameter-overrides S3BucketName=krishimind-data
+docker build -t krishimind-ai:latest -f docker/Dockerfile .
+docker run -p 8000:8000 krishimind-ai:latest
 ```
 
 ### 8.6 Local Development Setup
@@ -742,12 +705,8 @@ aws cloudformation deploy \
 # Install dependencies
 pip install -r requirements.txt
 
-# Set environment variables
-export S3_BUCKET=krishimind-data
-export AWS_REGION=ap-south-1
-
 # Run API server
-python -m src.api.main
+uvicorn cloud.api.app:app --host 0.0.0.0 --port 8000
 ```
 
 **Access**:

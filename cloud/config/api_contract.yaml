@@ -26,7 +26,7 @@ servers:
   - url: http://localhost:8000
     description: Local development server
   - url: https://api.krishimind.ai/v1
-    description: Production server (AWS)
+    description: Production server (optional cloud deployment)
 
 tags:
   - name: Predictions
