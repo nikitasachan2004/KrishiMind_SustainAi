@@ -1,0 +1,106 @@
+{
+  "status": "success",
+  "district": "Guntur",
+  "season": "Kharif",
+  "area_hectares": 10.0,
+  "scenario_applied": "mild_drought",
+  "recommendations": [
+    {
+      "rank": 1,
+      "crop": "Sugarcane",
+      "composite_score": 0.674,
+      "predicted_yield_tonnes_per_ha": 52.52,
+      "predicted_price_inr_per_tonne": 3626.0,
+      "expected_revenue_inr_per_ha": 180903.0,
+      "total_revenue_inr": 1809029.0,
+      "risk_level": "medium",
+      "sustainability_metrics": {
+        "water_use_estimate": 15675.0,
+        "water_saved_vs_baseline": -161.25,
+        "fertilizer_proxy": 0.1445,
+        "carbon_proxy": 17.34,
+        "risk_reduction_pct": 0.0,
+        "sustainability_score": 0.5634
+      },
+      "proxy_metrics": true
+    },
+    {
+      "rank": 2,
+      "crop": "Cotton(Lint)",
+      "composite_score": 0.3004,
+      "predicted_yield_tonnes_per_ha": 1.69,
+      "predicted_price_inr_per_tonne": 6620.0,
+      "expected_revenue_inr_per_ha": 10650.0,
+      "total_revenue_inr": 106499.0,
+      "risk_level": "high",
+      "sustainability_metrics": {
+        "water_use_estimate": 5600.0,
+        "water_saved_vs_baseline": 6.67,
+        "fertilizer_proxy": 0.102,
+        "carbon_proxy": 12.24,
+        "risk_reduction_pct": -96.78,
+        "sustainability_score": 0.5556
+      },
+      "proxy_metrics": true
+    },
+    {
+      "rank": 3,
+      "crop": "Rice",
+      "composite_score": 0.2976,
+      "predicted_yield_tonnes_per_ha": 2.24,
+      "predicted_price_inr_per_tonne": 2680.0,
+      "expected_revenue_inr_per_ha": 5694.0,
+      "total_revenue_inr": 56945.0,
+      "risk_level": "high",
+      "sustainability_metrics": {
+        "water_use_estimate": 6000.0,
+        "water_saved_vs_baseline": 0.0,
+        "fertilizer_proxy": 0.1275,
+        "carbon_proxy": 15.3,
+        "risk_reduction_pct": -95.73,
+        "sustainability_score": 0.4585
+      },
+      "proxy_metrics": true
+    },
+    {
+      "rank": 4,
+      "crop": "Soybean",
+      "composite_score": 0.2971,
+      "predicted_yield_tonnes_per_ha": 1.94,
+      "predicted_price_inr_per_tonne": 3470.0,
+      "expected_revenue_inr_per_ha": 6382.0,
+      "total_revenue_inr": 63820.0,
+      "risk_level": "high",
+      "sustainability_metrics": {
+        "water_use_estimate": 2250.0,
+        "water_saved_vs_baseline": 62.5,
+        "fertilizer_proxy": 0.051,
+        "carbon_proxy": 6.12,
+        "risk_reduction_pct": -96.31,
+        "sustainability_score": 0.6425
+      },
+      "proxy_metrics": true
+    },
+    {
+      "rank": 5,
+      "crop": "Wheat",
+      "composite_score": 0.2967,
+      "predicted_yield_tonnes_per_ha": 2.34,
+      "predicted_price_inr_per_tonne": 1931.0,
+      "expected_revenue_inr_per_ha": 4293.0,
+      "total_revenue_inr": 42934.0,
+      "risk_level": "high",
+      "sustainability_metrics": {
+        "water_use_estimate": 3712.5,
+        "water_saved_vs_baseline": 38.12,
+        "fertilizer_proxy": 0.119,
+        "carbon_proxy": 14.28,
+        "risk_reduction_pct": -95.54,
+        "sustainability_score": 0.5954
+      },
+      "proxy_metrics": true
+    }
+  ],
+  "disclaimer": "District-level aggregation. Not farm-specific advice.",
+  "sustainability_disclosure": "Sustainability metrics are proxy estimates derived from agronomic literature constants and soil indices. They are decision-support indicators, not field-measured values. District-level aggregation used — no field-level geo precision claimed."
+}
