@@ -80,6 +80,16 @@ class CropPlanRequest(BaseModel):
     }
 
 
+class SustainabilityMetrics(BaseModel):
+    """Proxy sustainability metrics for a crop recommendation"""
+    water_use_estimate: float = Field(..., description="Proxy water use index (index-hectare-days)")
+    water_saved_vs_baseline: float = Field(..., description="Pct water saved vs highest-demand crop")
+    fertilizer_proxy: float = Field(..., description="Proxy fertilizer load (0-1, lower = better)")
+    carbon_proxy: float = Field(..., description="Proxy carbon footprint (index-hectare units)")
+    risk_reduction_pct: float = Field(..., description="Climate risk reduction percentage")
+    sustainability_score: float = Field(..., description="Composite sustainability score (0-1)")
+
+
 class CropRecommendation(BaseModel):
     """Individual crop recommendation"""
     rank: int = Field(..., description="Recommendation rank (1 = best)")
@@ -90,6 +100,12 @@ class CropRecommendation(BaseModel):
     expected_revenue_inr_per_ha: float = Field(..., description="Revenue per hectare")
     total_revenue_inr: float = Field(..., description="Total revenue for given area")
     risk_level: str = Field(..., description="Risk assessment: low/medium/high")
+    sustainability_metrics: Optional[SustainabilityMetrics] = Field(
+        default=None, description="Proxy sustainability impact metrics"
+    )
+    proxy_metrics: bool = Field(
+        default=True, description="True — sustainability values are proxy estimates, not field-measured"
+    )
 
 
 class CropPlanResponse(BaseModel):
@@ -106,6 +122,15 @@ class CropPlanResponse(BaseModel):
     disclaimer: str = Field(
         default="District-level aggregation. Not farm-specific advice.",
         description="Risk disclosure"
+    )
+    sustainability_disclosure: str = Field(
+        default=(
+            "Sustainability metrics are proxy estimates derived from agronomic "
+            "literature constants and soil indices. They are decision-support "
+            "indicators, not field-measured values. District-level aggregation "
+            "used — no field-level geo precision claimed."
+        ),
+        description="Sustainability proxy methodology disclosure"
     )
     
     model_config = {
