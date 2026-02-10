@@ -1,5 +1,5 @@
 """
-KrishiMind AI - Unit Tests
+KrishiMind SustainAI - Unit Tests
 """
 
 import pytest

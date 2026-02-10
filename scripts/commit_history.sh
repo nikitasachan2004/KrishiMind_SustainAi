@@ -1,11 +1,11 @@
 #!/bin/bash
-# KrishiMind AI - Staged Commit Script (Sustainability Hardening Phase)
+# KrishiMind SustainAI - Staged Commit Script (Sustainability Hardening Phase)
 # Creates believable, staged commits for the sustainability layer additions
 
 set -e
 
 echo "=============================================="
-echo "KrishiMind AI - Sustainability Phase Commits"
+echo "KrishiMind SustainAI - Sustainability Phase Commits"
 echo "=============================================="
 
 GREEN='\033[0;32m'

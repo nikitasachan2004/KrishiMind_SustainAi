@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-KrishiMind AI - API Test Client
+KrishiMind SustainAI - API Test Client
 Tests the prediction endpoint locally
 """
 
@@ -300,7 +300,7 @@ def test_sustainability_fields() -> bool:
 def main():
     """Run all tests"""
     print("\n" + "=" * 60)
-    print("🌾 KRISHIMIND AI - API TEST SUITE")
+    print("🌾 KRISHIMIND SUSTAINAI - API TEST SUITE")
     print("=" * 60)
     print(f"Target: {BASE_URL}")
     

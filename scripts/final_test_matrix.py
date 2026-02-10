@@ -2,7 +2,7 @@
 """
 Final Test Matrix
 =================
-Lightweight validation suite for KrishiMind AI.
+Lightweight validation suite for KrishiMind SustainAI.
 Runs against the local FastAPI server and prints a pass/fail table.
 
 No external test frameworks required — uses only requests + stdlib.
@@ -190,7 +190,7 @@ def print_results() -> None:
     """Print pass/fail table."""
     print()
     print("=" * 72)
-    print("KRISHIMIND AI — FINAL TEST MATRIX")
+    print("KRISHIMIND SUSTAINAI — FINAL TEST MATRIX")
     print("=" * 72)
     print(f"{'Test':<35} {'Result':<8} {'Detail'}")
     print("-" * 72)

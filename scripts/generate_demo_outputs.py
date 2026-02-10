@@ -2,7 +2,7 @@
 """
 Demo Output Generator
 =====================
-Calls the local KrishiMind AI FastAPI endpoint with three fixed scenarios
+Calls the local KrishiMind SustainAI FastAPI endpoint with three fixed scenarios
 and saves the full JSON responses under demo_outputs/.
 
 Scenarios:
