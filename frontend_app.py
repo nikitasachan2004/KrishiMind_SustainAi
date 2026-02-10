@@ -1,8 +1,8 @@
 """
-KrishiMind AI — Crop Planning & Optimization Engine
+KrishiMind SustainAI — Crop Planning & Optimization Engine
 Streamlit Frontend Dashboard
 
-Single-file frontend that connects to the KrishiMind AI API.
+Single-file frontend that connects to the KrishiMind SustainAI API.
 No local model access — API only.
 """
 
@@ -26,7 +26,7 @@ SEASONS = ["Kharif", "Rabi", "Summer", "Autumn", "Winter", "Whole Year"]
 # =============================================================================
 
 st.set_page_config(
-    page_title="KrishiMind AI — Crop Planning",
+    page_title="KrishiMind SustainAI — Crop Planning",
     page_icon="🌾",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -164,7 +164,7 @@ def get_risk_label(score: float) -> str:
 # HEADER
 # =============================================================================
 
-st.markdown('<h1 class="main-header">🌾 KrishiMind AI</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">🌾 KrishiMind SustainAI</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Crop Planning & Resource Optimization Engine</p>', unsafe_allow_html=True)
 
 # =============================================================================
@@ -255,7 +255,7 @@ if not api_healthy:
     st.error("""
     ⚠️ **API Not Available**
     
-    The KrishiMind AI backend is not reachable. Please ensure:
+    The KrishiMind SustainAI backend is not reachable. Please ensure:
     1. The API server is running on `http://127.0.0.1:8000`
     2. Run: `uvicorn cloud.api.app:app --host 127.0.0.1 --port 8000`
     """)
@@ -519,7 +519,7 @@ st.markdown("---")
 st.markdown(
     """
     <div style="text-align: center; color: #888; font-size: 0.9rem;">
-        <p>🌾 <strong>KrishiMind AI</strong> — Empowering Indian Farmers with AI</p>
+        <p>🌾 <strong>KrishiMind SustainAI</strong> — Empowering Indian Farmers with AI</p>
         <p>Hackathon Demo 2026 | District-Level Predictions Only</p>
     </div>
     """,

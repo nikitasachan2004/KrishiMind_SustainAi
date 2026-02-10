@@ -1,5 +1,5 @@
 """
-Sustainability Impact Layer for KrishiMind AI.
+Sustainability Impact Layer for KrishiMind SustainAI.
 Provides proxy-based resource and environmental impact estimation.
 """
 
