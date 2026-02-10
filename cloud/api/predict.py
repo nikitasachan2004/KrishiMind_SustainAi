@@ -1,5 +1,5 @@
 """
-KrishiMind AI - Prediction Logic
+KrishiMind SustainAI - Prediction Logic
 Inference-only pipeline using pre-trained models
 """
 

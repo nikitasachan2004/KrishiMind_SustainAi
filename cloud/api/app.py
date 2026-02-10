@@ -1,5 +1,5 @@
 """
-KrishiMind AI - FastAPI Application
+KrishiMind SustainAI - FastAPI Application
 Production-ready API for crop planning and optimization
 """
 
@@ -46,7 +46,7 @@ async def lifespan(app: FastAPI):
     Loads models at startup, validates all required artifacts.
     """
     logger.info("=" * 60)
-    logger.info("KRISHIMIND AI - API STARTUP")
+    logger.info("KRISHIMIND SUSTAINAI - API STARTUP")
     logger.info("=" * 60)
     
     try:
@@ -61,12 +61,12 @@ async def lifespan(app: FastAPI):
     yield  # Application runs here
     
     # Shutdown
-    logger.info("🛑 KrishiMind AI shutting down...")
+    logger.info("🛑 KrishiMind SustainAI shutting down...")
 
 
 # Create FastAPI application
 app = FastAPI(
-    title="KrishiMind AI — Sustainable Crop & Resource Optimization Engine",
+    title="KrishiMind SustainAI — Sustainable Crop & Resource Optimization Engine",
     description="""
     🌾 **Sustainable Crop Planning & Resource Optimization Engine**
     
@@ -108,7 +108,7 @@ app.add_middleware(
 async def root():
     """Root endpoint with API information"""
     return {
-        "name": "KrishiMind AI",
+        "name": "KrishiMind SustainAI",
         "version": API_VERSION,
         "description": "Crop Planning & Resource Optimization Engine",
         "docs": "/docs",

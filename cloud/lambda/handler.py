@@ -1,5 +1,5 @@
 """
-KrishiMind AI - AWS Lambda Handler
+KrishiMind SustainAI - AWS Lambda Handler
 Mangum adapter for FastAPI on Lambda
 """
 

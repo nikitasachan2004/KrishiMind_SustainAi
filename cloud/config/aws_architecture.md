@@ -1,8 +1,8 @@
-# KrishiMind AI - AWS Architecture
+# KrishiMind SustainAI - AWS Architecture
 
 ## Overview
 
-KrishiMind AI is deployed on AWS using a serverless-first architecture optimized for:
+KrishiMind SustainAI is deployed on AWS using a serverless-first architecture optimized for:
 - **Cost efficiency** — Pay-per-request pricing
 - **Scalability** — Auto-scaling with demand
 - **Low latency** — Edge-optimized API Gateway

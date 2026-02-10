@@ -1,5 +1,5 @@
 """
-KrishiMind AI - Model Loader
+KrishiMind SustainAI - Model Loader
 Startup model loading with validation guards
 """
 
@@ -26,7 +26,7 @@ class ModelLoadError(Exception):
 
 class ModelLoader:
     """
-    Singleton model loader for KrishiMind AI.
+    Singleton model loader for KrishiMind SustainAI.
     Loads models once at startup with validation.
     """
     
@@ -96,7 +96,7 @@ class ModelLoader:
             return True
         
         logger.info("=" * 60)
-        logger.info("KRISHIMIND AI - MODEL STARTUP")
+        logger.info("KRISHIMIND SUSTAINAI - MODEL STARTUP")
         logger.info("=" * 60)
         logger.info(f"Base path: {self.base_path}")
         

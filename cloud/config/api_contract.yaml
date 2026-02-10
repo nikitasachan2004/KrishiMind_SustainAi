@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: KrishiMind AI API
+  title: KrishiMind SustainAI API
   description: |
     🌾 **Crop Planning & Resource Optimization Engine**
     
@@ -16,7 +16,7 @@ info:
     Not suitable for farm-specific decisions. Consult local agricultural experts.
   version: 1.0.0
   contact:
-    name: KrishiMind AI Team
+    name: KrishiMind SustainAI Team
     email: support@krishimind.ai
   license:
     name: MIT
@@ -54,7 +54,7 @@ paths:
                 properties:
                   name:
                     type: string
-                    example: KrishiMind AI
+                    example: KrishiMind SustainAI
                   version:
                     type: string
                     example: 1.0.0

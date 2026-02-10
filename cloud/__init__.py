@@ -1,2 +1,2 @@
 # cloud/__init__.py
-"""KrishiMind AI - Cloud Deployment Module"""
+"""KrishiMind SustainAI - Cloud Deployment Module"""

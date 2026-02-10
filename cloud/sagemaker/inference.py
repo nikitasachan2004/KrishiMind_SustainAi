@@ -1,5 +1,5 @@
 """
-KrishiMind AI - SageMaker Inference Script
+KrishiMind SustainAI - SageMaker Inference Script
 Implements required SageMaker serving functions
 """
 

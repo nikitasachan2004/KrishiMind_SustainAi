@@ -1,5 +1,5 @@
 # cloud/lambda/__init__.py
-"""KrishiMind AI - Lambda Handler Module"""
+"""KrishiMind SustainAI - Lambda Handler Module"""
 
 from cloud.lambda.handler import handler
 

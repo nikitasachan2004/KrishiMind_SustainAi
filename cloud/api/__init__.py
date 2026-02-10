@@ -1,5 +1,5 @@
 # cloud/api/__init__.py
-"""KrishiMind AI - Cloud API Module"""
+"""KrishiMind SustainAI - Cloud API Module"""
 
 from cloud.api.app import app
 from cloud.api.model_loader import model_loader, get_model_loader

@@ -1,5 +1,5 @@
 """
-KrishiMind AI - Pydantic Schemas
+KrishiMind SustainAI - Pydantic Schemas
 Request/Response validation models
 """
 
