@@ -1,4 +1,4 @@
-# KrishiMind AI - Production Dependencies
+# KrishiMind SustainAI - Production Dependencies
 # Pinned versions for reproducibility
 
 # Data Processing

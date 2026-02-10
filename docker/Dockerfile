@@ -1,4 +1,4 @@
-# KrishiMind AI - Production Docker Image
+# KrishiMind SustainAI - Production Docker Image
 # Multi-stage build for minimal image size
 
 # Stage 1: Builder
