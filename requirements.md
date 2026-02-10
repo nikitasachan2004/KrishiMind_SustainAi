@@ -1,4 +1,4 @@
-# KrishiMind AI - Requirements Document
+# KrishiMind SustainAI - Requirements Document
 
 ## 1. Problem Statement
 
@@ -13,7 +13,7 @@ Current solutions focus primarily on yield prediction in isolation, without inte
 
 ## 2. Solution Overview
 
-KrishiMind AI is an AI-powered crop planning and resource optimization engine that provides district-level crop recommendations for Indian agriculture. The system integrates multiple data sources and machine learning models to rank crops based on predicted yield, expected market prices, revenue potential, soil suitability, and climate risk.
+KrishiMind SustainAI is an AI-powered crop planning and resource optimization engine that provides district-level crop recommendations for Indian agriculture. The system integrates multiple data sources and machine learning models to rank crops based on predicted yield, expected market prices, revenue potential, soil suitability, and climate risk.
 
 **Core Capability**: Decision engine that produces top-3 ranked crop recommendations per district and season, with scenario simulation for climate shock analysis.
 

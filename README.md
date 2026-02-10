@@ -1,4 +1,4 @@
-# KrishiMind AI - Sustainable Crop & Resource Optimization Engine
+# KrishiMind SustainAI - Sustainable Crop & Resource Optimization Engine
 
 **AI system that reduces agricultural water use, fertilizer load, and climate risk through predictive crop planning and scenario-based resource optimization.**
 
@@ -33,7 +33,7 @@
 
 ## Sustainable AI Positioning
 
-KrishiMind AI is a **Sustainable AI** system designed for the AMD Slingshot Hackathon - **Sustainable AI & Green Tech** domain.
+KrishiMind SustainAI is a **Sustainable AI** system designed for the AMD Slingshot Hackathon - **Sustainable AI & Green Tech** domain.
 
 | Sustainability Criteria | How KrishiMind Addresses It |
 |------------------------|----------------------------|
@@ -64,7 +64,7 @@ These inefficiencies result in avoidable water consumption, excess chemical inpu
 
 ## Solution
 
-**KrishiMind AI** provides:
+**KrishiMind SustainAI** provides:
 
 1. **Yield Prediction** - ML models trained on historical crop data, climate features, and soil quality
 2. **Price Forecasting** - District-level mandi price aggregation for revenue estimation

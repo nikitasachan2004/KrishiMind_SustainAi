@@ -13,7 +13,7 @@ These inefficiencies result in avoidable water consumption, excess chemical inpu
 
 ## 2. System Overview
 
-**KrishiMind AI** is a predictive crop planning and resource optimisation engine that:
+**KrishiMind SustainAI** is a predictive crop planning and resource optimisation engine that:
 
 1. Predicts district-level **yield** (tonnes/ha) and **market price** (₹/tonne) using pre-trained RandomForest models.
 2. Ranks candidate crops via a **multi-criteria composite score** (yield, revenue, climate stability, soil match).
@@ -60,4 +60,4 @@ This disclosure is auto-included in every API response (`sustainability_disclosu
 
 ## 5. Value Statement
 
-KrishiMind AI enables data-driven crop selection that quantifiably reduces water consumption, fertilizer dependency, and carbon-equivalent emissions while improving climate resilience — using CPU-efficient ML inference deployable at the edge without cloud or GPU requirements.
+KrishiMind SustainAI enables data-driven crop selection that quantifiably reduces water consumption, fertilizer dependency, and carbon-equivalent emissions while improving climate resilience — using CPU-efficient ML inference deployable at the edge without cloud or GPU requirements.

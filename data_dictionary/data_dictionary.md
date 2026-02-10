@@ -1,8 +1,8 @@
-# KrishiMind AI - Data Dictionary
+# KrishiMind SustainAI - Data Dictionary
 
 ## Overview
 
-This document describes all data sources, features, and transformations used in the KrishiMind AI system.
+This document describes all data sources, features, and transformations used in the KrishiMind SustainAI system.
 
 ---
 

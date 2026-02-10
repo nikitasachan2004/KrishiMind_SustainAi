@@ -1,4 +1,4 @@
-# KrishiMind AI - Design Document
+# KrishiMind SustainAI - Design Document
 
 ## 1. System Architecture
 
@@ -487,7 +487,7 @@ Baseline Risk: 25 → Shocked Risk: 35 (10 point increase)
 **Endpoint 1: Health Check**
 ```
 GET /
-Response: {"message": "KrishiMind AI API", "status": "active"}
+Response: {"message": "KrishiMind SustainAI API", "status": "active"}
 ```
 
 **Endpoint 2: Crop Recommendations**

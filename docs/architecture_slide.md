@@ -1,4 +1,4 @@
-# Architecture — KrishiMind AI
+# Architecture — KrishiMind SustainAI
 
 ## Inference Pipeline Diagram
 
@@ -62,4 +62,4 @@
 
 ## Speaker Notes
 
-KrishiMind AI uses a linear inference pipeline where a user request flows through model loading, parallel yield and price prediction, multi-criteria crop ranking, and a final sustainability enrichment step. The ML models are RandomForest regressors chosen specifically for CPU efficiency — they perform only threshold comparisons at inference time, avoiding the matrix operations that would require GPU acceleration. The sustainability impact engine is a pure arithmetic layer that computes proxy water, fertilizer, and carbon metrics using FAO-style crop constants and soil quality indices. This architecture is intentionally minimal: stateless, cloud-optional, and deployable on any hardware with a Python runtime. All sustainability outputs are proxy estimates with auto-included disclosures, ensuring transparency for reviewers.
+KrishiMind SustainAI uses a linear inference pipeline where a user request flows through model loading, parallel yield and price prediction, multi-criteria crop ranking, and a final sustainability enrichment step. The ML models are RandomForest regressors chosen specifically for CPU efficiency — they perform only threshold comparisons at inference time, avoiding the matrix operations that would require GPU acceleration. The sustainability impact engine is a pure arithmetic layer that computes proxy water, fertilizer, and carbon metrics using FAO-style crop constants and soil quality indices. This architecture is intentionally minimal: stateless, cloud-optional, and deployable on any hardware with a Python runtime. All sustainability outputs are proxy estimates with auto-included disclosures, ensuring transparency for reviewers.

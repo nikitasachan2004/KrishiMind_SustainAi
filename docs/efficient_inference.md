@@ -1,6 +1,6 @@
 # Efficient Inference — AMD-Friendly Architecture
 
-> KrishiMind AI is designed for **low-compute, CPU-friendly inference** suitable for edge deployment and AMD Slingshot environments.
+> KrishiMind SustainAI is designed for **low-compute, CPU-friendly inference** suitable for edge deployment and AMD Slingshot environments.
 
 ---
 
@@ -33,7 +33,7 @@
 
 ## Edge Deployment Readiness
 
-KrishiMind AI can run on:
+KrishiMind SustainAI can run on:
 
 - **AMD Ryzen Embedded** — V-series or R-series edge processors
 - **Any x86_64 Linux box** with Python 3.9+
