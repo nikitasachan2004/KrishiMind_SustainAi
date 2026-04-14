@@ -58,6 +58,19 @@ class TestSchemas:
         
         assert request.district == "Guntur"
         assert request.area == 10.0
+
+    def test_crop_plan_request_optional_image_path(self):
+        """Test request accepts optional image path."""
+        from cloud.api.schemas import CropPlanRequest, SeasonEnum
+
+        request = CropPlanRequest(
+            district="Guntur",
+            season=SeasonEnum.KHARIF,
+            area=10.0,
+            image_path="/tmp/leaf.jpg",
+        )
+
+        assert request.image_path == "/tmp/leaf.jpg"
     
     def test_crop_plan_request_negative_area(self):
         """Test negative area fails validation"""
@@ -154,6 +167,18 @@ class TestPredictor:
         assert first.rank == 1
         assert first.crop is not None
         assert first.composite_score > 0
+
+
+class TestPlantDiseaseDetection:
+    """Tests for plant disease integration wrapper."""
+
+    def test_predict_disease_invalid_path(self):
+        """Invalid image paths should not raise and should return fallback."""
+        from src.plant_detection.inference.predict import predict_disease
+
+        result = predict_disease("/tmp/does-not-exist.jpg")
+
+        assert result == {"disease": "unknown", "confidence": 0.0}
 
 
 class TestDataDictionary:
