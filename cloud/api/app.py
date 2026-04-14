@@ -26,6 +26,7 @@ from cloud.api.schemas import (
 )
 from cloud.api.model_loader import model_loader, ModelLoadError
 from cloud.api.predict import get_predictor
+from src.plant_detection.inference.predict import predict_disease
 
 # Configure logging
 logging.basicConfig(
@@ -178,6 +179,10 @@ async def predict_crop_plan(request: CropPlanRequest):
         
         # Get scenario name
         scenario_name = predictor.get_scenario_name(request.scenario)
+
+        disease_result = None
+        if request.image_path:
+            disease_result = predict_disease(request.image_path)
         
         # Build response
         return CropPlanResponse(
@@ -187,6 +192,7 @@ async def predict_crop_plan(request: CropPlanRequest):
             area_hectares=request.area,
             scenario_applied=scenario_name,
             recommendations=recommendations,
+            plant_disease=disease_result,
             disclaimer="District-level aggregation. Not farm-specific advice."
         )
         
