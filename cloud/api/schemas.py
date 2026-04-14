@@ -56,6 +56,10 @@ class CropPlanRequest(BaseModel):
         default=None,
         description="Optional climate scenario modifications"
     )
+    image_path: Optional[str] = Field(
+        default=None,
+        description="Optional local image path for plant disease detection"
+    )
     
     @field_validator('district')
     @classmethod
@@ -108,6 +112,12 @@ class CropRecommendation(BaseModel):
     )
 
 
+class PlantDiseasePrediction(BaseModel):
+    """Plant disease detection result."""
+    disease: str = Field(..., description="Predicted disease label")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Prediction confidence")
+
+
 class CropPlanResponse(BaseModel):
     """Response schema for crop planning endpoint"""
     status: str = Field(..., description="Request status: success/error")
@@ -131,6 +141,10 @@ class CropPlanResponse(BaseModel):
             "used — no field-level geo precision claimed."
         ),
         description="Sustainability proxy methodology disclosure"
+    )
+    plant_disease: Optional[PlantDiseasePrediction] = Field(
+        default=None,
+        description="Optional plant disease result when image_path is provided"
     )
     
     model_config = {
