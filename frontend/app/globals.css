@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 84 43% 97%;
+    --foreground: 140 23% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 140 23% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 140 23% 12%;
+    --primary: 92 42% 37%;
+    --primary-foreground: 84 43% 98%;
+    --secondary: 88 31% 91%;
+    --secondary-foreground: 140 23% 18%;
+    --muted: 90 24% 92%;
+    --muted-foreground: 132 12% 35%;
+    --accent: 147 35% 88%;
+    --accent-foreground: 140 23% 18%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 60 9% 98%;
+    --border: 100 16% 84%;
+    --input: 100 16% 84%;
+    --ring: 92 42% 37%;
+    --radius: 1rem;
+  }
+
+  .dark {
+    --background: 140 18% 8%;
+    --foreground: 84 20% 94%;
+    --card: 140 16% 11%;
+    --card-foreground: 84 20% 94%;
+    --popover: 140 16% 11%;
+    --popover-foreground: 84 20% 94%;
+    --primary: 92 49% 60%;
+    --primary-foreground: 140 20% 10%;
+    --secondary: 140 12% 16%;
+    --secondary-foreground: 84 20% 94%;
+    --muted: 140 10% 18%;
+    --muted-foreground: 90 10% 68%;
+    --accent: 145 25% 18%;
+    --accent-foreground: 84 20% 94%;
+    --destructive: 0 63% 43%;
+    --destructive-foreground: 60 9% 98%;
+    --border: 140 10% 20%;
+    --input: 140 10% 20%;
+    --ring: 92 49% 60%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", "Segoe UI", sans-serif;
+    background-image:
+      radial-gradient(circle at top, rgba(214, 237, 180, 0.7), transparent 30%),
+      linear-gradient(180deg, #f7faef 0%, #f3f8ec 45%, #eef4e6 100%);
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(circle at top, rgba(42, 84, 54, 0.45), transparent 28%),
+      linear-gradient(180deg, #09110c 0%, #0b1510 46%, #0d1913 100%);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
