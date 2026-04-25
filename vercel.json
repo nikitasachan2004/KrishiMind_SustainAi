@@ -1,12 +1,4 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "env": {
-    "BACKEND_URL": "@backend_url"
-  }
+  "framework": "nextjs",
+  "rootDirectory": "frontend"
 }
