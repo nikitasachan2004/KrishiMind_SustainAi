@@ -14,8 +14,10 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+/lib/
 lib64/
+!frontend/lib/
+!frontend/lib/utils.ts
 parts/
 sdist/
 var/
