@@ -6,6 +6,8 @@ Production-ready API for crop planning and optimization
 import os
 import sys
 import logging
+import base64
+import requests
 from datetime import datetime
 from pathlib import Path
 from contextlib import asynccontextmanager
@@ -181,8 +183,31 @@ async def predict_crop_plan(request: CropPlanRequest):
 
         disease_result = None
         if request.image_path:
-            from src.plant_detection.inference.predict import predict_disease
-            disease_result = predict_disease(request.image_path)
+            try:
+                # Read and encode image to base64
+                image_path = Path(request.image_path)
+                if image_path.exists():
+                    with open(image_path, "rb") as f:
+                        image_data = base64.b64encode(f.read()).decode("utf-8")
+                    
+                    # Call HuggingFace Space API
+                    hf_space_url = "https://Nishantgupta911-krishimind-disease.hf.space/run/predict"
+                    payload = {"data": [f"data:image/jpeg;base64,{image_data}"]}
+                    
+                    response = requests.post(hf_space_url, json=payload, timeout=30)
+                    
+                    if response.status_code == 200:
+                        api_response = response.json()
+                        # Parse Gradio response format
+                        if "data" in api_response and len(api_response["data"]) > 0:
+                            disease_result = api_response["data"][0]
+                    else:
+                        logger.warning(f"HF Space API error: {response.status_code}")
+                else:
+                    logger.warning(f"Image not found: {request.image_path}")
+            except Exception as e:
+                logger.warning(f"Disease detection failed: {e}")
+                disease_result = None
         
         # Build response
         return CropPlanResponse(
