@@ -7,7 +7,7 @@ from torchvision import transforms
 with open("classes.json") as f:
     classes = json.load(f)
 
-model = torch.load("best_model.pth", map_location="cpu")
+model = torch.load("model.pt", map_location="cpu")
 model.eval()
 
 transform = transforms.Compose([
