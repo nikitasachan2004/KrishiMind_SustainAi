@@ -108,6 +108,9 @@ debug/
 notebooks/
 *.log
 *.tmp
+SRS/
+srs/
+
 
 # Sensitive data
 *.csv.bak
