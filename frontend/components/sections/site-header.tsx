@@ -131,8 +131,8 @@ function Logo() {
         <Leaf className="size-4" />
       </div>
       <div>
-        <p className="text-sm font-semibold leading-none">KrishiMind SustainAI</p>
-        <p className="text-xs text-muted-foreground">Crop Planning + Plant Health</p>
+        <p className="text-sm font-bold leading-none text-foreground">KrishiMind SustainAI</p>
+        <p className="text-[11px] text-muted-foreground">Sustainable Crop Intelligence</p>
       </div>
     </div>
   );

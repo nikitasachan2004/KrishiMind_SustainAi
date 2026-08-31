@@ -17,33 +17,32 @@ export function HeroSection() {
           <div className="relative py-20 md:pb-28 lg:pb-32 lg:pt-28">
             <div className="relative z-10 mx-auto flex max-w-7xl flex-col px-6 lg:block lg:px-12">
               <div className="mx-auto max-w-lg text-center lg:ml-0 lg:max-w-full lg:text-left">
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-white/70 px-4 py-2 text-sm text-muted-foreground shadow-sm backdrop-blur dark:bg-slate-900/70">
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-card/80 px-4 py-2 text-sm text-foreground shadow-sm backdrop-blur dark:bg-card/80">
                   <Leaf className="size-4 text-primary" />
-                  AI-powered diagnosis for farms, labs, and field teams
+                  AI-Powered Sustainable Crop Planning & Resource Optimization
                 </div>
-                <h1 className="mt-8 max-w-3xl text-balance text-5xl tracking-tight md:text-6xl lg:mt-16 xl:text-7xl">
-                  Detect plant disease before it spreads across the crop.
+                <h1 className="mt-8 max-w-3xl text-balance text-5xl font-extrabold tracking-tight text-foreground md:text-6xl lg:mt-14 xl:text-7xl">
+                  Intelligent crop planning for resilient, high-yield agriculture.
                 </h1>
-                <p className="mt-8 max-w-2xl text-balance text-lg text-muted-foreground">
-                  Upload a leaf image, get fast model predictions, review confidence
-                  scores, and move from inspection to action with a cleaner workflow.
+                <p className="mt-6 max-w-2xl text-balance text-lg leading-relaxed text-muted-foreground">
+                  Predict district-level yields, forecast wholesale mandi prices, simulate climate stress scenarios, and minimize water & fertilizer footprints with multi-criteria AI optimization.
                 </p>
 
-                <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
-                  <Button asChild size="lg" className="h-12 rounded-full pl-5 pr-3 text-base">
+                <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
+                  <Button asChild size="lg" className="h-12 rounded-full px-7 text-base font-semibold shadow-lg shadow-primary/20">
                     <Link href="/analyze">
-                      <span className="text-nowrap">Start Diagnosis</span>
-                      <ChevronRight className="ml-1" />
+                      <span className="text-nowrap">Open Crop Optimizer</span>
+                      <ChevronRight className="ml-1 size-5" />
                     </Link>
                   </Button>
                   <Button
                     asChild
                     size="lg"
-                    variant="ghost"
-                    className="h-12 rounded-full px-5 text-base hover:bg-zinc-950/5 dark:hover:bg-white/5"
+                    variant="outline"
+                    className="h-12 rounded-full border-border/80 px-6 text-base font-medium hover:bg-zinc-950/5 dark:hover:bg-white/5"
                   >
-                    <Link href="/diseases">
-                      <span className="text-nowrap">Browse Disease Library</span>
+                    <Link href="/about">
+                      <span className="text-nowrap">Explore Architecture</span>
                     </Link>
                   </Button>
                 </div>
@@ -55,10 +54,10 @@ export function HeroSection() {
                 loop
                 muted
                 playsInline
-                className="size-full object-cover opacity-35 mix-blend-multiply dark:opacity-25"
+                className="size-full object-cover opacity-30 mix-blend-multiply dark:opacity-20"
                 src="https://ik.imagekit.io/lrigu76hy/tailark/dna-video.mp4?updatedAt=1745736251477"
               />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.65),transparent_45%)] dark:bg-[radial-gradient(circle_at_top,rgba(120,255,170,0.12),transparent_35%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.7),transparent_50%)] dark:bg-[radial-gradient(circle_at_top,rgba(120,255,170,0.12),transparent_40%)]" />
             </div>
           </div>
         </section>
@@ -72,11 +71,11 @@ export function HeroSection() {
               </div>
               <div className="relative py-6 md:w-[calc(100%-11rem)]">
                 <InfiniteSlider duration={38} durationOnHover={60} gap={112}>
-                  {['FastAPI', 'PyTorch', 'Next.js', 'Tailwind', 'TensorBoard', 'MPS GPU', 'EfficientNet', 'Streamlit'].map(
+                  {['RandomForest Yield ML', 'FastAPI', 'Next.js 15', 'Climate Simulation', 'Water Optimization', 'Pydantic v2', 'Mandi Pricing', 'Soil Health Matrix'].map(
                     (item) => (
                       <div
                         key={item}
-                        className="flex rounded-full border border-border/60 bg-white/80 px-5 py-2 text-sm font-medium text-foreground shadow-sm dark:bg-slate-900/80"
+                        className="flex rounded-full border border-border/60 bg-card/90 px-5 py-2 text-sm font-medium text-foreground shadow-sm dark:bg-card/90"
                       >
                         {item}
                       </div>
