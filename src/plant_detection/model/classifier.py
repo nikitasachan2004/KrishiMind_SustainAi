@@ -5,8 +5,15 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import timm
-import torch.nn as nn
+try:
+    import timm
+    import torch.nn as nn
+    _TIMM_AVAILABLE = True
+except ImportError:
+    timm = None
+    import torch.nn as nn
+    _TIMM_AVAILABLE = False
+
 
 
 def get_model_paths() -> tuple[Path, Path]:
@@ -32,12 +39,15 @@ class PlantDiseaseClassifier(nn.Module):
 
     def __init__(self, num_classes: int, pretrained: bool = False):
         super().__init__()
+        if not _TIMM_AVAILABLE:
+            raise ImportError("timm library is not installed")
         self.backbone = timm.create_model(
             "efficientnet_b0",
             pretrained=pretrained,
             num_classes=0,
             global_pool="avg",
         )
+
         feature_dim = self.backbone.num_features
         self.head = nn.Sequential(
             nn.BatchNorm1d(feature_dim),
